@@ -1,0 +1,694 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Carbur-app</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+    crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.8.0/css/bulma.min.css">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+  <link rel="stylesheet" href="{% static 'bootstrap-select/css/bootstrap-select.css' %}">
+  <script src="{% static 'bootstrap-select/js/bootstrap-select.js' %}"></script>
+
+</head>
+
+<body>
+
+  <div class="topnav" id="myTopnav">
+    <a href="#" class="active"><b>Carbur App</b></a>
+  </div>
+
+
+  <div class="row no-gutter">
+
+    <div class="filtre-bar col-12">
+      <div id="filter-card" class="">
+        <form class="form-horizontal">
+          <div class="form-group form-container">
+            <div class="row">
+              <div class=" row col-4">
+                <h6>Périmètre :</h6>
+                <div class="col-6 filter-col">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="typeFilter" id="typeFilterCity"
+                      onclick="filterByCitySelected()" required>
+                    <label class="form-check-label" for="typeFilterCity">
+                      Ville
+                    </label>
+                  </div>
+                  <div class="form-group choix" id="select-city-group">
+                    <select class="selectpicker show-menu-arrow select-btn" data-style="form-control"
+                      data-live-search="true" title="-- Choisir une ville --" id="select-city" required
+                      data-width="fit">
+                      {% for city in cities %}
+                      <option data-tokens="{{city}}">{{city}}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-6 filter-col">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="typeFilter" id="typeFilterDistance"
+                      onclick="filterByDistanceSelected()" required>
+                    <label class="form-check-label" for="typeFilterDistance">
+                      Distance <span class="small">(à partir de ma position)</span>
+                    </label>
+                  </div>
+                  <div class="form-group choix" id="select-distance-groupe">
+                    <label class="radio-inline align-radio">
+                      <input type="radio" name="distance" value="10" class="select-distance" required>10 Km
+                    </label>
+                    <label class="radio-inline align-radio">
+                      <input type="radio" name="distance" value="20" class="select-distance" required>20 Km
+                    </label>
+                    <label class="radio-inline align-radio" style="padding: 5px;">
+                      <input type="radio" name="distance" value="30" class="select-distance" required>30 Km
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-6 filter-col">
+                <div class="form-group">
+                  <h6>Carburants :</h6>
+                  <ul class="ul-carburant">
+                    <li class="li-carburant">
+                      <input type="checkbox" id="carburant1" name="c-carburant" value="gazole" />
+                      <label for="carburant1" class="label-carburant"><img
+                          src="{% static 'img/logo-gazole.png' %}" /><img class="carbur-autocollant"
+                          src="{% static 'img/B7.png' %}" /></label>
+                    </li>
+                    <li class="li-carburant">
+
+                      <input type="checkbox" id="carburant2" name="c-carburant" value="gazole" />
+                      <label for="carburant2" class="label-carburant"><img
+                          src="{% static 'img/logo-gazole.png' %}" /><img class="carbur-autocollant"
+                          src="{% static 'img/B10.png' %}" /></label>
+                    </li>
+                    <li class="li-carburant">
+
+                      <input type="checkbox" id="carburant3" name="c-carburant" value="GPLc" />
+                      <label for="carburant3" class="label-carburant"><img src="{% static 'img/GPL-c.png' %}" /></label>
+                    </li>
+                    <li class="li-carburant">
+
+                      <input type="checkbox" id="carburant4" name="c-carburant" value="E85" />
+                      <label for="carburant4" class="label-carburant"><img
+                          src="{% static 'img/logo-E85.png' %}" /></label>
+                    </li>
+                    <li class="li-carburant">
+
+                      <input type="checkbox" id="carburant5" name="c-carburant" value="ED95" />
+                      <label for="carburant5" class="label-carburant"><img
+                          src="{% static 'img/logo-ED95.png' %}" /></label>
+                    </li>
+                    <li class="li-carburant">
+
+                      <input type="checkbox" id="carburant6" name="c-carburant" value="SP95" />
+                      <label for="carburant6" class="label-carburant"><img
+                          src="{% static 'img/logo-sp95.png' %}" /></label>
+                    </li>
+                    <li class="li-carburant">
+
+                      <input type="checkbox" id="carburant7" name="c-carburant" value="E10" />
+                      <label for="carburant7" class="label-carburant"><img
+                          src="{% static 'img/Logo-Sp95-E10.png' %}" /></label>
+                    </li>
+                    <li class="li-carburant">
+
+                      <input type="checkbox" id="carburant8" name="c-carburant" value="SP98" />
+                      <label for="carburant8" class="label-carburant"><img
+                          src="{% static 'img/logo-sp98.png' %}" /></label>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="col-2 filter-col search-button-container">
+                <button type="button" class="s-btn" id="search-btn" onclick="search()"><i class="fa fa-search"></i>
+                  Rechercher</button>
+              </div>
+
+            </div>
+
+
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div id="details" class="col-3">
+      <div class="all">
+        <div id="pointsDeVente" class="carbur-list">
+        </div>
+      </div>
+    </div>
+
+    <div id="pointDeVenteDetails" class="col-2 not-showed">
+      
+      <div class="detail-header margin-border">
+        <h2><b>Station-service &#183; <span id="pdv-name"></span></b></h2>
+        <span class="close-thik" onclick="closePointDeVenteDetails()">
+          <img src="{% static 'img/close.png' %}" alt="close button">
+        </span>
+        <p class="type-station">Station sur <span id="type-station"></span></p>
+      </div>
+
+      <div class="detail-horaire margin-border">
+        <p> <b> Horaires de la station </b></p>
+        <p id="paiement-auto" class="not-showed">24h/24 (paiement sans guichet)</p>
+        <table class="horaires" id="horaire-table">
+          <tr>
+            <td>
+              &#183; Lundi
+            </td>
+            <td class="td-hour" id="Lundi">
+
+            </td>
+          </tr>
+          <tr>
+            <td>
+              &#183; Mardi
+            </td>
+            <td class="td-hour" id="Mardi">
+
+            </td>
+          </tr>
+          <tr>
+            <td>
+              &#183; Mercredi
+            </td>
+            <td class="td-hour" id="Mercredi">
+
+            </td>
+          </tr>
+          <tr>
+            <td>
+              &#183; Jeudi
+            </td>
+            <td class="td-hour" id="Jeudi">
+
+            </td>
+          </tr>
+          <tr>
+            <td>
+              &#183; Vendredi
+            </td>
+            <td class="td-hour" id="Vendredi">
+
+            </td>
+          </tr>
+          <tr>
+            <td>
+              &#183; Samedi
+            </td>
+            <td class="td-hour" id="Samedi">
+
+            </td>
+          </tr>
+          <tr>
+            <td>
+              &#183; Dimache
+            </td>
+            <td class="td-hour" id="Dimanche">
+
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="detail-service margin-border">
+        <span> <b> Services proposés </b></span>
+        <ul id="service-list">
+        </ul>
+      </div>
+    </div>
+
+    <div id="right-section" class="col-9">
+
+      <div id="map" class="col-12">
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+
+  <script type="text/javascript">
+
+    $(document).ready(function () {
+      $(window).resize(function () {
+
+        let windowHeight = window.innerHeight;
+        let navbarHeight = $('#myTopnav').height();
+        let searchpanelHeight = $('.filtre-bar').height();
+
+        $("#details").height(windowHeight - (navbarHeight + searchpanelHeight));
+        $("#map").height(windowHeight - (navbarHeight + searchpanelHeight));
+        $("#pointDeVenteDetails").height(windowHeight - (navbarHeight + searchpanelHeight));
+
+      }).resize();
+    });
+
+    var pointsDeVente = [];
+    var navigatorPosition = { lat: 0, lng: 0 };
+    var map = null;
+    var defautZoomLevel = 14;
+    var myMarker = null;
+    var markers = [];
+    var markersId = [];
+    var cityPosition = null;
+    var mapStyles = [{"featureType":"all","elementType":"geometry","stylers":[{"lightness":"26"},{"gamma":"1.14"},{"saturation":"38"}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#ffffff"}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"color":"#c7c7c7"}]}];
+    const markerImage = "{% static 'img/marker.png' %}";
+    const markerImageSelected = "{% static 'img/marker-selected.png' %}";
+    const userLocationImageMarker = "{% static 'img/user-location.png' %}";
+    var pointDeVenteSelected = null;
+    var detailsShowed = false;
+    var idMarkerSelected = null;
+
+    function addContentToCard(adresse, prix, id) {
+      $('#pointsDeVente').append('<div class="carbur-list-item col-12" id="pdv-' + id + '" onclick="showPointDeVenteDetails(' + id + ')"><p><b>' + id + ' . ' + adresse + ' </b></p><p>' + prix + '<p/></div>');
+    }
+
+    function addPointDeVenteToList(pdv, id) {
+
+      if (pdv.hasOwnProperty("prix")) {
+        if (Array.isArray(pdv['prix'])) {
+          let prix = "";
+          for (let index = 0; index < pdv['prix'].length; index++) {
+            prix = prix + "<span class='carburant-name'>" + pdv['prix'][index].nom + "</span> : " + pdv['prix'][index].valeur + "€ ";
+          }
+
+          addContentToCard(pdv['adresse'], prix, id);
+        } else {
+          let prix = "<b> " + pdv['prix'].nom + " </b> : " + pdv['prix'].valeur + "€ ";
+
+          addContentToCard(pdv['adresse'], prix, id);
+        }
+
+      } else {
+        addContentToCard(pdv['adresse'], "", id);
+      }
+    }
+
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+      } else {
+        alert("Geolocation is not supported by this browser.");
+      }
+    }
+
+    function showPosition(position) {
+      let lat = position.coords.latitude;
+      let long = position.coords.longitude;
+      navigatorPosition = { lat: parseFloat(lat), lng: parseFloat(long) }
+      getPointsDeVenteByLocation(getPointsDeVenteByLocation);
+      initMap()
+    }
+
+    function initMap() {
+      var myLatLng = new google.maps.LatLng(navigatorPosition.lat, navigatorPosition.lng);
+      map = new google.maps.Map(document.getElementById("map"), {
+        zoom: defautZoomLevel,
+        center: navigatorPosition,
+        styles: mapStyles,
+      });
+
+      myMarker = new google.maps.Marker({
+        position: navigatorPosition,
+        map,
+        title: "My Location",
+        icon: userLocationImageMarker
+      });
+
+      markers.push(myMarker);
+    }
+
+    function addmarker(lat, lng, address, id) {
+      var latlng = new google.maps.LatLng(lat, lng);
+      var marker = new google.maps.Marker({
+        position: latlng,
+        title: address,
+        draggable: false,
+        map: map,
+        icon: markerImage
+      });
+
+      markers.push(marker);
+      markersId[id] = marker;
+
+      google.maps.event.addListener(marker, 'click', function (e) {
+        showPointDeVenteDetails(id);
+      });
+
+    }
+
+    function deleteMarkers() {
+      for (var i = 0; i < markers.length; i++) {
+        markers[i].setMap(null);
+      }
+      markers = [];
+      markersId = [];
+      pointsDeVente = [];
+    };
+
+    function showPointDeVenteDetails(id) {
+
+      if (!detailsShowed) {
+        let mapSection = document.getElementById("right-section");
+        mapSection.classList.remove("col-9");
+        mapSection.classList.add("col-7");
+
+        let detailSection = document.getElementById("pointDeVenteDetails");
+        detailSection.classList.remove("not-showed");
+        detailsShowed = true;
+      }
+
+      let pdvId = "pdv-" + id;
+      let itemPdv = document.getElementById(pdvId);
+
+      if (itemPdv != pointDeVenteSelected) {
+        if (pointDeVenteSelected != null) pointDeVenteSelected.classList.remove("item-selected");
+        pointDeVenteSelected = itemPdv;
+        pointDeVenteSelected.classList.add("item-selected");
+ 
+        if(idMarkerSelected != null){
+          markersId[idMarkerSelected].setIcon(markerImage);
+          markersId[idMarkerSelected].setAnimation(null);
+        }
+
+        idMarkerSelected = id;
+
+        if(map.getZoom() != defautZoomLevel){
+          map.setZoom(defautZoomLevel);
+        }
+
+        map.panTo(markersId[id].getPosition());
+        markersId[id].setIcon(markerImageSelected);
+        markersId[id].setAnimation(google.maps.Animation.BOUNCE);
+
+        setTimeout(function() {
+            markersId[id].setAnimation(null)
+        }, 3000);
+
+      }
+
+      let pdv = pointsDeVente[id];
+      $("#pdv-name").text(pdv['adresse']);
+
+      if (pdv['pop'] == 'A')
+        $("#type-station").text("autoroute")
+      else
+        $("#type-station").text("route")
+
+      $("#paiement-auto").addClass("not-showed");
+      if("horaires" in pdv && pdv['horaires']['automate-24-24'] == "1"){
+
+        $("#paiement-auto").removeClass("not-showed");
+        $("#horaire-table").removeClass("not-showed");
+
+        let jours = pdv['horaires']['jour'];
+
+        for (let index = 0; index < jours.length; index++) {
+          var label = "#" + jours[index]['nom'];
+
+          if ("horaire" in jours[index]) {
+            
+            let horaire = jours[index]['horaire'];
+            let text;
+            if(horaire.length > 0){
+              text = horaire[0].ouverture+"h - "+horaire[0].fermeture+"h  "+horaire[1].ouverture+"h - "+horaire[1].fermeture+"h";
+            }else{
+              text = horaire.ouverture+"h - "+horaire.fermeture+"h";
+            }
+            $(label).text(text);
+                
+
+          } else {
+              
+              if (jours[index]['ferme'] == "1")
+                $(label).text("Fermé")
+              else
+                $(label).text("Ouvert")
+          }
+        }
+
+      } else {
+        $("#horaire-table").addClass("not-showed");
+      }
+
+      $('#service-list').empty();
+
+      if("services" in pdv){
+        if (Array.isArray(pdv['services']['service'])) {
+          for (let index = 0; index < pdv['services']['service'].length; index++) {
+            let service = pdv['services']['service'][index];
+            $("#service-list").append('<li>'+service+'</li>');
+          }
+        }else{
+          $("#service-list").append('<li>'+pdv['services']['service']+'</li>');
+        }
+      }
+
+
+    }
+
+    function closePointDeVenteDetails() {
+
+      let detailSection = document.getElementById("pointDeVenteDetails");
+      detailSection.classList.add("not-showed");
+
+      let mapSection = document.getElementById("right-section");
+      mapSection.classList.remove("col-7");
+      mapSection.classList.add("col-9");
+      detailsShowed = false;
+
+      $("#paiement-auto").removeClass("not-showed");
+      $("#paiement-auto").addClass("not-showed");
+
+    }
+
+    getLocation();
+
+    var filterByCity = false;
+    var inputCity = document.querySelector('#typeFilterCity');
+    var filterByDistance = false;
+    var inputDistance = document.querySelector('.select-distance');
+
+    function filterByCitySelected() {
+      var radios = document.getElementsByName('distance');
+      for (var i = 0, r = radios, l = r.length; i < l; i++) {
+        r[i].disabled = true;
+      }
+
+      let div = document.getElementById("select-distance-groupe");
+      div.classList.add("div-disabled");
+
+      if (filterByDistance == true) {
+        filterByDistance = false;
+        document.getElementById("select-city").disabled = false;
+        let div = document.getElementById("select-city-group");
+        div.classList.remove("div-disabled");
+      }
+      filterByCity = true;
+    }
+
+    function filterByDistanceSelected() {
+      document.getElementById("select-city").disabled = true;
+      let div = document.getElementById("select-city-group");
+      div.classList.add("div-disabled");
+
+      if (filterByCity == true) {
+        filterByCity = false;
+        var radios = document.getElementsByName('distance');
+        for (var i = 0, r = radios, l = r.length; i < l; i++) {
+          r[i].disabled = false;
+        }
+        let div = document.getElementById("select-distance-groupe");
+        div.classList.remove("div-disabled");
+      }
+      filterByDistance = true;
+    }
+
+    function search() {
+
+      var carburant_checkboxes = document.getElementsByName('c-carburant');
+      var carburants = [];
+
+      for (var i = 0; i < carburant_checkboxes.length; i++) {
+        if (carburant_checkboxes[i].checked) {
+          carburants.push(carburant_checkboxes[i].value)
+        }
+      }
+
+      if (filterByCity == true) {
+
+        let inputSelect = document.getElementById("select-city");
+        let city = inputSelect.options[inputSelect.selectedIndex].text;
+
+        getCityLocationAndPointsDeVenteByCityAndCarburant(city, carburants);
+
+      } else if (filterByDistance == true) {
+
+        let distance = $("input[type='radio'][name='distance']:checked").val();
+        getPointsDeVenteByCircleAndCarburant(navigatorPosition, distance, carburants);
+
+      }
+    }
+
+    function getPointsDeVenteByCityAndCarburant(city, carburants) {
+
+      fetch('http://127.0.0.1:8001/pdv/city-carburant/', {
+        method: 'POST',
+        headers: {
+          "Content-type": "application/json",
+          "X-Requested-With": "XMLHttpRequest",
+        },
+        body: JSON.stringify({
+          'city': city,
+          'carburants': carburants
+        })
+      })
+        .then(response => {
+          return response.json()
+        })
+        .then(data => {
+          document.getElementById('pointsDeVente').innerHTML = '';
+          deleteMarkers()
+          $.each(data, function (i, v) {
+
+            let pointDeVente = {};
+            let address = v.adresse + " " + v.cp + " " + v.ville;
+            v.adresse = address;
+
+            pointDeVente['adresse'] = address;
+            if (v.hasOwnProperty("prix")) {
+              pointDeVente["prix"] = v.prix;
+            }
+            let id = i + 1;
+            addmarker(parseFloat(v.latitude), parseFloat(v.longitude), address, id);
+            addPointDeVenteToList(pointDeVente, id);
+            pointsDeVente[id] = v;
+          });
+          map.setCenter(new google.maps.LatLng(parseFloat(cityPosition.lat), parseFloat(cityPosition.lng)));
+        })
+    }
+
+    function getCityLocationAndPointsDeVenteByCityAndCarburant(city, carburants) {
+      fetch('http://127.0.0.1:8001/pdv/city-location/', {
+        method: 'POST',
+        headers: {
+          "Content-type": "application/json",
+          "X-Requested-With": "XMLHttpRequest",
+        },
+        body: JSON.stringify({
+          'city': city
+        })
+      })
+        .then(response => {
+          return response.json()
+        })
+        .then(data => {
+          cityPosition = data;
+          getPointsDeVenteByCityAndCarburant(city, carburants);
+        })
+    }
+
+    function getPointsDeVenteByLocation() {
+
+      fetch('http://127.0.0.1:8001/pdv/', {
+        method: 'POST',
+        headers: {
+          "Content-type": "application/json",
+          "X-Requested-With": "XMLHttpRequest",
+        },
+        body: JSON.stringify({
+          'lat': navigatorPosition.lat,
+          'lng': navigatorPosition.lng
+        })
+      })
+        .then(response => {
+          return response.json()
+        })
+        .then(data => {
+          $.each(data, function (i, v) {
+            let pointDeVente = {};
+            let address = v.adresse + " " + v.cp + " " + v.ville;
+            v.adresse = address;
+
+            pointDeVente['adresse'] = address;
+            if (v.hasOwnProperty("prix")) {
+              pointDeVente["prix"] = v.prix;
+            }
+            var id = i + 1;
+            addmarker(parseFloat(v.latitude), parseFloat(v.longitude), address, id);
+            addPointDeVenteToList(pointDeVente, id);
+            pointsDeVente[id] = v;
+          });
+        })
+
+    }
+
+    function getPointsDeVenteByCircleAndCarburant(position, radius, carburants) {
+
+      fetch('http://127.0.0.1:8001/pdv/city-radius/', {
+        method: 'POST',
+        headers: {
+          "Content-type": "application/json",
+          "X-Requested-With": "XMLHttpRequest",
+        },
+        body: JSON.stringify({
+          'lat': position.lat,
+          'lng': position.lng,
+          'radius': radius,
+          'carburants': carburants
+        })
+      })
+        .then(response => {
+          return response.json()
+        })
+        .then(data => {
+          document.getElementById('pointsDeVente').innerHTML = '';
+          deleteMarkers()
+          $.each(data, function (i, v) {
+
+            let pointDeVente = {};
+            let address = v.adresse + " " + v.cp + " " + v.ville;
+            v.adresse = address;
+
+            pointDeVente['adresse'] = address;
+            if (v.hasOwnProperty("prix")) {
+              pointDeVente["prix"] = v.prix;
+            }
+
+            let id = i + 1;
+            addmarker(parseFloat(v.latitude), parseFloat(v.longitude), address, id);
+            addPointDeVenteToList(pointDeVente, id);
+
+            pointsDeVente[id] = v;
+
+          });
+          map.setCenter(new google.maps.LatLng(parseFloat(position.lat), parseFloat(position.lng)));
+        })
+    }
+
+  </script>
+
+  <script type="text/javascript"
+    src="https://maps.google.com/maps/api/js?key={{ google_maps_api_key }}&callback=initMap"></script>
+
+</body>
+
+</html>
