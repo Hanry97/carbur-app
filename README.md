@@ -15,6 +15,6 @@ $ .\venv\Scripts\activate
 $ cd carbur_backend  
 $ python manage.py runserver 8001  
 
-__Mise à jour des données__
+__Mise à jour des données__  
 Depuis la racine : $ python routine.py   
 
