@@ -2,19 +2,19 @@
 
 # installation (windows) :
 
-$ pip install virtualenv
-$ cd my_project_folder
-
-$ virtualenv venv
-$ .\venv\Scripts\activate 
-$ pip install -r requirements.txt
-
+$ pip install virtualenv  
+$ cd my_project_folder  
+  
+$ virtualenv venv  
+$ .\venv\Scripts\activate   
+$ pip install -r requirements.txt  
+  
 # lancement de l'application :
 
-$ .\venv\Scripts\activate
+$ .\venv\Scripts\activate  
 $ cd carbur_backend  
-$ python manage.py runserver 8001
+$ python manage.py runserver 8001  
 
-Mise à jour des données
-Depuis la racine : $ python routine.py 
+__Mise à jour des données__
+Depuis la racine : $ python routine.py   
 
